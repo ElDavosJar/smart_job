@@ -1,83 +1,98 @@
-# SkillGrid - Job Matching Platform
+# SkillGrid - Construcción DDD
 
-## 📋 Overview
+## 🏗️ Arquitectura Implementada
 
-SkillGrid is a job matching platform built with Domain-Driven Design (DDD) and Clean Architecture using Spring Boot.
+### Bounded Contexts Definidos
+- **Members**: Gestión de usuarios base
+- **Employers**: Funcionalidad específica de empleadores
+- **JobSeekers**: Funcionalidad específica de buscadores
+- **Jobs**: Gestión de publicaciones de trabajo
+- **Matching**: Algoritmos de matching
+- **Commons**: Utilidades compartidas
 
-## 🏗️ Architecture
+### Value Objects Creados
+- **IDs**: UserId, MemberId, EmployerId, JobSeekerId, CountryId, CityId
+- **Email**: Validación RFC 5322 completa
+- **Phone**: Validación internacional flexible
+- **Address**: Dirección con referencias ID
+- **ContactInfo**: Composición Email + Phone
+- **BirthDate**: Validación edad (16+ años)
 
-### Bounded Contexts
-- **Members**: User management and profiles
-- **Employers**: Employer-specific functionality
-- **JobSeekers**: Job seeker-specific functionality
-- **Jobs**: Job postings management
-- **Matching**: Matching algorithms
-- **Commons**: Shared utilities and value objects
-
-### Tech Stack
-- Java 21
-- Spring Boot 3.2.0
-- PostgreSQL
-- Maven
-
-## 📁 Project Structure
+## 📁 Estructura Construida
 
 ```
-src/main/java/com/skillgrid/
-├── commons/              # Shared components
-│   ├── ids/             # ID value objects
-│   └── utils/           # Utilities (Email, Phone)
-├── members/             # Member bounded context
-│   └── domain/model/    # Domain entities
-├── employers/           # Employer bounded context
-├── jobseekers/          # JobSeeker bounded context
-├── jobs/               # Jobs bounded context
-├── matching/           # Matching bounded context
-└── infrastructure/     # External integrations
+com.skillgrid/
+├── commons/
+│   ├── ids/          ✅ IDs completados
+│   └── utils/        ✅ Email, Phone
+├── members/
+│   └── domain/model/ ✅ Member, Address, ContactInfo, BirthDate
+├── employers/        ⏳ Listo para implementar
+├── jobseekers/       ⏳ Listo para implementar
+├── jobs/            ⏳ Listo para implementar
+├── matching/        ⏳ Listo para implementar
+└── infrastructure/  ✅ Sincronización países
 ```
 
-## 🚀 Getting Started
+## 🎯 Decisiones de Diseño
 
-### Prerequisites
-- Java 21
-- Maven 3.6+
-- PostgreSQL
+### Patrón Builder
+- Constructor privado en Member
+- Factory methods: `create()`, `rehydrate()`
+- Builder fluent para construcción compleja
 
-### Build
-```bash
-mvn clean compile
-```
+### Domain Methods
+- Métodos que retornan nuevas instancias
+- Sin setters públicos
+- Lógica de negocio encapsulada
 
-### Run
-```bash
-mvn spring-boot:run
-```
+### Value Objects
+- Records inmutables
+- Validación en constructor
+- Métodos de utilidad incluidos
 
-## 📊 Current Status
+## ✅ Lo Completado
 
-### ✅ Completed
-- [x] DDD architecture setup
-- [x] Value objects (IDs, Email, Phone)
-- [x] Member entity with domain logic
-- [x] Address and ContactInfo value objects
-- [x] BirthDate validation
-- [x] Builder pattern implementation
-- [x] Basic infrastructure setup
+### Domain Layer
+- [x] Member entity con lógica completa
+- [x] Value objects con validaciones
+- [x] Builder pattern implementado
+- [x] Factory methods funcionando
 
-### 🔄 Next Steps
-- [ ] Complete Employer aggregate
-- [ ] Complete JobSeeker aggregate
-- [ ] Implement JobPosting entity
-- [ ] Add repositories and services
-- [ ] Create REST controllers
-- [ ] Add authentication/authorization
+### Infrastructure
+- [x] Spring Boot 3.2.0 + Java 21
+- [x] PostgreSQL + Flyway
+- [x] API REST para países
+- [x] Migraciones de BD
 
-## 🧪 Testing
+### Commons
+- [x] IDs con UUID
+- [x] Email con validación completa
+- [x] Phone con formatos internacionales
+- [x] .gitignore configurado
 
-```bash
-mvn test
-```
+## 🔄 Próximos Pasos
 
-## 📞 Contact
+1. **Employer Aggregate**
+   - Employer entity
+   - EmployerProfile VO
+   - Relación con Member
 
-SkillGrid development project.
+2. **JobSeeker Aggregate**
+   - JobSeeker entity
+   - JobSeekerProfile VO
+   - Relación con Member
+
+3. **JobPosting Entity**
+   - Publicaciones de trabajo
+   - Relación con Employer
+
+4. **Repositories & Services**
+   - JPA repositories
+   - Application services
+   - Domain services
+
+5. **REST Controllers**
+   - Endpoints API
+   - DTOs
+   - Validaciones
